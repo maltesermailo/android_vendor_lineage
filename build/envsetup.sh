@@ -60,9 +60,6 @@ function breakfast()
             fi
 
             lunch lineage_$target-$aosp_target_release-$variant
-HABUILD_SDK [panther] jannikmueller@fedora:~/hadk/out-kernel/google/gs-6.1/aosp$ git push -u origin hybris-23.2
-remote: No anonymous write access.
-fatal: Authentication failed for 'https://github.com/maltesermailo/android_kernel_pantah.git/'        fi
     fi
     return $?
 }

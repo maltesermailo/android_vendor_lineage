@@ -60,7 +60,9 @@ function breakfast()
             fi
 
             lunch lineage_$target-$aosp_target_release-$variant
-        fi
+HABUILD_SDK [panther] jannikmueller@fedora:~/hadk/out-kernel/google/gs-6.1/aosp$ git push -u origin hybris-23.2
+remote: No anonymous write access.
+fatal: Authentication failed for 'https://github.com/maltesermailo/android_kernel_pantah.git/'        fi
     fi
     return $?
 }
@@ -999,7 +1001,7 @@ function build_kernel() {
     if [ -d "${KERNEL_BUILD_TOP}/out/${target_kernel_device}/dist" ]; then
         rm -rf "${KERNEL_BUILD_TOP}/out/${target_kernel_device}/dist"
     fi
-    if ! ./build_"${target_kernel_device}".sh; then
+    if ! ./build_"${target_kernel_device}".sh --config=use_source_tree_aosp; then
         popd > /dev/null
         return 1
     fi

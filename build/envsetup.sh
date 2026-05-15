@@ -995,6 +995,37 @@ function build_kernel() {
             popd > /dev/null
             return 1
         fi
+        local patches_dir="${ANDROID_BUILD_TOP}/kernel-patches"
+        local kernel_src_dir="${KERNEL_BUILD_TOP}/aosp"
+        if [ -d "${patches_dir}" ]; then
+            if [ ! -d "${kernel_src_dir}/.git" ]; then
+                echo "Kernel source tree not found at ${kernel_src_dir}"
+                popd > /dev/null
+                return 1
+            fi
+
+            shopt -s nullglob
+            local patch_files=("${patches_dir}"/*.patch)
+            shopt -u nullglob
+
+            if [ ${#patch_files[@]} -eq 0 ]; then
+                echo "No .patch files found in ${patches_dir}, skipping"
+            else
+                echo "Applying patches from ${patches_dir}"
+                pushd "${kernel_src_dir}" > /dev/null
+                for patch in "${patch_files[@]}"; do
+                    echo "  Applying: $(basename "${patch}")"
+                    if ! git am --3way --keep-cr "${patch}"; then
+                        echo "Failed to apply ${patch}"
+                        git am --abort 2>/dev/null
+                        popd > /dev/null
+                        popd > /dev/null
+                        return 1
+                    fi
+                done
+                popd > /dev/null
+            fi
+        fi
     fi
     if [ -d "${KERNEL_BUILD_TOP}/out/${target_kernel_device}/dist" ]; then
         rm -rf "${KERNEL_BUILD_TOP}/out/${target_kernel_device}/dist"

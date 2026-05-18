@@ -984,7 +984,7 @@ function build_kernel() {
             repo_init_args+=("--repo-rev" "${REPO_VERSION}")
         fi
 
-        yes | repo init -u https://github.com/LineageOS/${target_kernel_manifest}.git ${repo_init_args[@]} || [ $? -eq 141 ]
+        yes | repo init -u https://github.com/maltesermailo/${target_kernel_manifest}.git ${repo_init_args[@]} || [ $? -eq 141 ]
         if [ $? -ne 0 ]; then
             echo "Kernel source repo init failed"
             popd > /dev/null
